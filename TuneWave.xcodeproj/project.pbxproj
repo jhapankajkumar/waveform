@@ -7,14 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C3106C02006689B00E56434 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C3106BF2006689B00E56434 /* AppDelegate.m */; };
-		2C3106C32006689B00E56434 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C3106C22006689B00E56434 /* ViewController.m */; };
 		2C3106C62006689B00E56434 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C3106C42006689B00E56434 /* Main.storyboard */; };
 		2C3106C82006689B00E56434 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C3106C72006689B00E56434 /* Assets.xcassets */; };
 		2C3106CB2006689B00E56434 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C3106C92006689B00E56434 /* LaunchScreen.storyboard */; };
 		2C3106CE2006689B00E56434 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C3106CD2006689B00E56434 /* main.m */; };
 		2C3106D82006689B00E56434 /* TuneWaveTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C3106D72006689B00E56434 /* TuneWaveTests.m */; };
 		2C3106E32006689C00E56434 /* TuneWaveUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C3106E22006689C00E56434 /* TuneWaveUITests.m */; };
+		2C6F16202007384C0019E2B7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C6F16142007384B0019E2B7 /* ViewController.m */; };
+		2C6F16232007384C0019E2B7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C6F161B2007384C0019E2B7 /* AppDelegate.m */; };
+		2C6F16242007384C0019E2B7 /* WaveForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C6F161E2007384C0019E2B7 /* WaveForm.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,10 +37,6 @@
 
 /* Begin PBXFileReference section */
 		2C3106BB2006689B00E56434 /* TuneWave.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TuneWave.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2C3106BE2006689B00E56434 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		2C3106BF2006689B00E56434 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		2C3106C12006689B00E56434 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		2C3106C22006689B00E56434 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		2C3106C52006689B00E56434 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2C3106C72006689B00E56434 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C3106CA2006689B00E56434 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -51,6 +48,12 @@
 		2C3106DE2006689C00E56434 /* TuneWaveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TuneWaveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C3106E22006689C00E56434 /* TuneWaveUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TuneWaveUITests.m; sourceTree = "<group>"; };
 		2C3106E42006689C00E56434 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2C6F16132007384B0019E2B7 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		2C6F16142007384B0019E2B7 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		2C6F161A2007384C0019E2B7 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		2C6F161B2007384C0019E2B7 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		2C6F161D2007384C0019E2B7 /* WaveForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveForm.h; sourceTree = "<group>"; };
+		2C6F161E2007384C0019E2B7 /* WaveForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveForm.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,13 +104,12 @@
 		2C3106BD2006689B00E56434 /* TuneWave */ = {
 			isa = PBXGroup;
 			children = (
-				2C3106BE2006689B00E56434 /* AppDelegate.h */,
-				2C3106BF2006689B00E56434 /* AppDelegate.m */,
-				2C3106C12006689B00E56434 /* ViewController.h */,
-				2C3106C22006689B00E56434 /* ViewController.m */,
+				2C6F16182007384C0019E2B7 /* Common */,
+				2C6F16122007384B0019E2B7 /* Controller */,
+				2C6F161C2007384C0019E2B7 /* View */,
 				2C3106C42006689B00E56434 /* Main.storyboard */,
-				2C3106C72006689B00E56434 /* Assets.xcassets */,
 				2C3106C92006689B00E56434 /* LaunchScreen.storyboard */,
+				2C3106C72006689B00E56434 /* Assets.xcassets */,
 				2C3106CC2006689B00E56434 /* Info.plist */,
 				2C3106CD2006689B00E56434 /* main.m */,
 			);
@@ -130,6 +132,41 @@
 				2C3106E42006689C00E56434 /* Info.plist */,
 			);
 			path = TuneWaveUITests;
+			sourceTree = "<group>";
+		};
+		2C6F16122007384B0019E2B7 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2C6F16132007384B0019E2B7 /* ViewController.h */,
+				2C6F16142007384B0019E2B7 /* ViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		2C6F16182007384C0019E2B7 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2C6F16192007384C0019E2B7 /* AppDelegate */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2C6F16192007384C0019E2B7 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				2C6F161A2007384C0019E2B7 /* AppDelegate.h */,
+				2C6F161B2007384C0019E2B7 /* AppDelegate.m */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		2C6F161C2007384C0019E2B7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C6F161D2007384C0019E2B7 /* WaveForm.h */,
+				2C6F161E2007384C0019E2B7 /* WaveForm.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,9 +302,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C3106C32006689B00E56434 /* ViewController.m in Sources */,
+				2C6F16232007384C0019E2B7 /* AppDelegate.m in Sources */,
+				2C6F16202007384C0019E2B7 /* ViewController.m in Sources */,
 				2C3106CE2006689B00E56434 /* main.m in Sources */,
-				2C3106C02006689B00E56434 /* AppDelegate.m in Sources */,
+				2C6F16242007384C0019E2B7 /* WaveForm.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
