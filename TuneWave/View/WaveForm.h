@@ -11,6 +11,6 @@
 #import <AVKit/AVKit.h>
 #import <MediaPlayer/MediaPlayer.h>
 @interface Waveform : NSObject
-+ (void) getImageFromMPMediaItem:(MPMediaItem*) item
-           completionBlock:(void (^)(UIImage* delayedImagePreparation))completionBlock;
++ (void) getImageFromMPMediaUrl:(NSURL*) mediaUrl
+           completionBlock:(void (^)(UIImage* waveImage))completionBlock;
 @end

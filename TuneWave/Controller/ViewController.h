@@ -12,7 +12,9 @@
 
 @interface ViewController : UIViewController<MPMediaPickerControllerDelegate,
 AVAudioPlayerDelegate,
-UIScrollViewDelegate>
+UIScrollViewDelegate,
+UIImagePickerControllerDelegate,
+UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *waveImageView;
 @property (weak, nonatomic) IBOutlet UIScrollView *waveScrollView;

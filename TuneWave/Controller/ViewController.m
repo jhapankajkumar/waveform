@@ -15,10 +15,12 @@
 
 @interface ViewController () {
     MPMediaItem *selectedMediaItem;
-    AVAudioPlayer *audioPlayer;
+    AVPlayer *mediaPlayer;
     NSTimer * timer;
     double pixelCrossed;
     UIImageView *bigWaveImageView;
+    NSURL *selectedMediaUrl;
+    BOOL isVideoSelected;
 }
 
 @end
@@ -29,6 +31,8 @@
     [super viewDidLoad];
     _songDetailContainer.hidden = true;
     self.waveScrollView.delegate = self;
+    self.playPauseButton.enabled = false;
+    self.playPauseButton.alpha = 0.7;
     
 }
 
@@ -44,25 +48,16 @@
     }]];
     
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"Music Library" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [self selectMedia];
+        [self selectAudio];
     }]];
     
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"Video Library" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [self selectMedia];
+        [self selectVideo];
     }]];
     
     // Present action sheet.
     [self presentViewController:actionSheet animated:YES completion:nil];
 }
-
-
--(void)selectMedia {
-    MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes:MPMediaTypeMusic];
-    mediaPicker.delegate = self;
-    mediaPicker.allowsPickingMultipleItems = NO;
-    [self presentViewController:mediaPicker animated:YES completion:nil];
-}
-
 
 - (IBAction)playPauseSong:(UIButton *)sender {
     if (!sender.selected) {
@@ -76,19 +71,60 @@
 }
 
 
+-(void)selectAudio {
+    MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes:MPMediaTypeMusic];
+    mediaPicker.delegate = self;
+    mediaPicker.allowsPickingMultipleItems = NO;
+    [self presentViewController:mediaPicker animated:YES completion:nil];
+}
+
+-(void)selectVideo {
+    // Present videos from which to choose
+    UIImagePickerController *videoPicker = [[UIImagePickerController alloc] init];
+    videoPicker.delegate = self; // ensure you set the delegate so when a video is chosen the right method can be called
+    
+    videoPicker.modalPresentationStyle = UIModalPresentationCurrentContext;
+    // This code ensures only videos are shown to the end user
+    videoPicker.mediaTypes = @[(NSString*)kUTTypeMovie, (NSString*)kUTTypeAVIMovie, (NSString*)kUTTypeVideo, (NSString*)kUTTypeMPEG4];
+    
+    videoPicker.videoQuality = UIImagePickerControllerQualityTypeHigh;
+    [self presentViewController:videoPicker animated:YES completion:nil];
+
+}
+
+
 
 #pragma mark - MediaPicker Delegates
 - (void)mediaPicker: (MPMediaPickerController *)mediaPicker didPickMediaItems:(MPMediaItemCollection *)mediaItemCollection
 {
+    
     [self dismissViewControllerAnimated:YES completion:nil];
     selectedMediaItem = [mediaItemCollection representativeItem];
+    selectedMediaUrl = selectedMediaItem.assetURL;
     [self setMediaInformation];
-    [self importMediaItem];
+    [self showWaveForm];
 }
 
 - (void)mediaPickerDidCancel:(MPMediaPickerController *)mediaPicker {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    isVideoSelected = true;
+    // This is the NSURL of the video object
+    NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
+    selectedMediaUrl = videoURL;
+    [self showWaveForm];
+    NSLog(@"VideoURL = %@", videoURL);
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+    
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
 
 
 #pragma mark - UI-Update Methods
@@ -99,13 +135,24 @@
     bigWaveImageView.image = waveImage;
     [self.waveScrollView addSubview:bigWaveImageView];
     [self.waveScrollView setContentSize:CGSizeMake(waveImage.size.width + self.waveScrollView.frame.size.width, self.waveScrollView.frame.size.height)];
-    audioPlayer = nil;
-    audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:[selectedMediaItem valueForProperty:MPMediaItemPropertyAssetURL] error:nil];
-    audioPlayer.delegate = self;
+
+    [self startMediaPlayer];
 }
 
+-(void)startMediaPlayer {
+    
+    [mediaPlayer pause];
+    mediaPlayer = nil;
+    mediaPlayer = [[AVPlayer alloc]initWithURL:selectedMediaUrl];
+    self.playPauseButton.enabled = true;
+    self.playPauseButton.alpha = 1.0;
 
-
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(mediaFinishedPlaying) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(mediaFailedToPlayTillEnd) name:AVPlayerItemFailedToPlayToEndTimeNotification object:nil];
+    
+    
+}
 
 -(void)setMediaInformation {
     
@@ -152,9 +199,9 @@
 }
 
 
--(void) importMediaItem {
+-(void) showWaveForm {
     
-    [Waveform getImageFromMPMediaItem:selectedMediaItem completionBlock:^(UIImage* waveImage){
+    [Waveform getImageFromMPMediaUrl:selectedMediaUrl completionBlock:^(UIImage* waveImage){
         [self resetMediaPlayer];
         [self setupWaveImage:waveImage];
         
@@ -163,16 +210,13 @@
 
 
 #pragma mark - AudioPlayerDelegates
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player
-                       successfully:(BOOL)flag {
-    
+- (void)mediaFinishedPlaying {
     [self resetMediaPlayer];
 }
 
-- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError * __nullable)error{
-    
+-(void)mediaFailedToPlayTillEnd {
+    //Error
 }
-
 
 -(void)resetMediaPlayer {
     [timer invalidate];
@@ -185,23 +229,20 @@
 
 -(void)updateTrack {
     double perPixel =  [[NSUserDefaults standardUserDefaults] doubleForKey:@"samplePerPixel"];
-    pixelCrossed =  audioPlayer.currentTime * perPixel;
+    pixelCrossed =  CMTimeGetSeconds(mediaPlayer.currentTime) * perPixel;
     CGRect rect = CGRectMake(pixelCrossed, 0, self.waveScrollView.frame.size.width, self.waveScrollView.frame.size.height);
     [self.waveScrollView setContentOffset:rect.origin animated:true];
-    _timeLabel.text = [self stringFromTimeInterval:audioPlayer.currentTime];
+    _timeLabel.text = [self stringFromTimeInterval:pixelCrossed];
     
     double multiPlier = bigWaveImageView.image.size.width/self.waveImageView.frame.size.width;
     
     NSInteger movePositionX = pixelCrossed/multiPlier;
-    
     _leadingConstraints.constant = movePositionX;
-    
-    
-    
 }
 
 -(void)playAudio {
-    [audioPlayer play];
+    
+    [mediaPlayer play];
     self.playPauseButton.selected = true;
     
     if (![timer isValid]) {
@@ -209,8 +250,8 @@
     }
 }
 
--(void)pauseAudio {
-    [audioPlayer pause];
+-(void)pauseAudio{
+    [mediaPlayer pause];
     self.playPauseButton.selected = false;
     [timer invalidate];
 }
@@ -231,8 +272,8 @@
     double perPixel =  [[NSUserDefaults standardUserDefaults] doubleForKey:@"samplePerPixel"];
     NSTimeInterval duration = xCoordinate/perPixel;
     [scrollView setContentOffset:offset];
-    [audioPlayer setCurrentTime:duration];
-    _timeLabel.text = [self stringFromTimeInterval:audioPlayer.currentTime];
+    [mediaPlayer seekToTime: CMTimeMake(duration, 1)];
+    _timeLabel.text = [self stringFromTimeInterval:duration];
 }
 
 @end

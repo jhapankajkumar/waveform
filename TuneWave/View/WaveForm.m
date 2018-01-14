@@ -17,14 +17,12 @@
 
 @implementation Waveform
 
-+ (void) getImageFromMPMediaItem:(MPMediaItem*) item
-             completionBlock:(void (^)(UIImage* delayedImagePreparation))completionBlock  {
++ (void) getImageFromMPMediaUrl:(NSURL*) mediaUrl
+             completionBlock:(void (^)(UIImage* waveImage))completionBlock  {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSURL    * assetURL = [item valueForProperty:MPMediaItemPropertyAssetURL];
-        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:assetURL options:nil];
+        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaUrl options:nil];
         NSData *waveFormData = [Waveform renderPNGAudioPictogramLogForAsset:asset];
         if (completionBlock) {
-            
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIImage *result = [UIImage imageWithData:waveFormData];
                 completionBlock(result);
@@ -100,10 +98,7 @@
     
     NSDictionary* outputSettingsDict = [[NSDictionary alloc] initWithObjectsAndKeys:
                                         
-                                        [NSNumber numberWithInt:kAudioFormatLinearPCM],AVFormatIDKey,
-                                        //     [NSNumber numberWithInt:44100.0],AVSampleRateKey, /*Not Supported*/
-                                        //     [NSNumber numberWithInt: 2],AVNumberOfChannelsKey,    /*Not Supported*/
-                                        
+                                        [NSNumber numberWithInt:kAudioFormatLinearPCM],AVFormatIDKey,                                        
                                         [NSNumber numberWithInt:16],AVLinearPCMBitDepthKey,
                                         [NSNumber numberWithBool:NO],AVLinearPCMIsBigEndianKey,
                                         [NSNumber numberWithBool:NO],AVLinearPCMIsFloatKey,
